@@ -21,14 +21,18 @@
         "__id__": 5
       },
       {
-        "__id__": 9
+        "__id__": 10
       }
     ],
     "_tag": -1,
     "_active": true,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 13
+      }
+    ],
     "_prefab": {
-      "__id__": 12
+      "__id__": 14
     },
     "_id": "",
     "_opacity": 255,
@@ -152,7 +156,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7d510d14-c91b-4980-9365-bea317875a62"
     },
     "fileId": "44G+6ngSlFPY+S6/nlyCEl",
     "sync": false
@@ -176,7 +180,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 8
+      "__id__": 9
     },
     "_id": "",
     "_opacity": 255,
@@ -273,7 +277,11 @@
     "hoverSprite": {
       "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
     },
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 8
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
@@ -301,12 +309,21 @@
     }
   },
   {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "main_view",
+    "handler": "buttoonClick",
+    "customEventData": "ss"
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7d510d14-c91b-4980-9365-bea317875a62"
     },
     "fileId": "4d7wsMEu9HQau8Cm6MvEi6",
     "sync": false
@@ -323,11 +340,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 10
+        "__id__": 11
       }
     ],
     "_prefab": {
-      "__id__": 11
+      "__id__": 12
     },
     "_id": "",
     "_opacity": 255,
@@ -370,7 +387,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 9
+      "__id__": 10
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -413,10 +430,22 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7d510d14-c91b-4980-9365-bea317875a62"
     },
     "fileId": "5fAG/OP+9Ks5A8WE8LsFjt",
     "sync": false
+  },
+  {
+    "__type__": "411d1GCK4tBJp3SZtfwRKAp",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "edit_box": {
+      "__id__": 11
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -424,7 +453,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7d510d14-c91b-4980-9365-bea317875a62"
     },
     "fileId": "7bsjljzn1IkZEvPGmhhhaN",
     "sync": false
