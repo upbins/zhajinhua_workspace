@@ -18,15 +18,21 @@ const Player = function (data) {
             console.log("send create player messga222 = " + JSON.stringify(data))
             player_socket.emit("player_join",data)
         }
-        
+
     };
     event_listner.on("send_create_player_message",sendCreatePlayerMessage);
 
     const sendPlayerOffline = function (uid) {
+        console.log("player-sendPlayerOffline")
         player_socket.emit("player_offline",uid);
     };
     event_listner.on("player_offline",sendPlayerOffline);
-    
+
+    const sendChangeHouseMangaer = function (uid) { //通知客户端修改UID
+        console.log("@@@@@@@@@@sendChangeHouseMangaer",uid)
+        player_socket.emit("change_house_manager_id",uid);
+    }
+    event_listner.on("change_house_manager_id",sendChangeHouseMangaer)
     that.getUid = function () {
         return player_uid
     };
@@ -35,8 +41,9 @@ const Player = function (data) {
     };
 
     that.destroy = function () {
-        event_listner.off("send_create_player_message333",sendCreatePlayerMessage);  
-        event_listner.off("send_create_player_message333",sendPlayerOffline);  
+        event_listner.off("send_create_player_message",sendCreatePlayerMessage);
+        event_listner.off("player_offline",sendPlayerOffline);
+        event_listner.off("change_house_manager_id",sendChangeHouseMangaer);
     };
    
     return that;

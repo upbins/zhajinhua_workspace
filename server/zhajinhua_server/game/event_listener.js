@@ -21,10 +21,10 @@ const EventListener = function (obj) {
             }
         }
     }; 
-    obj.off = function () {
+    obj.off = function (name,method) {
         console.log("off handler name = " + name);
-        if (Register.hasOwnProperty(name)) {
-            var handlerList = Register[name];
+        if (register.hasOwnProperty(name)) {
+            var handlerList = register[name];
             for (var i = 0; i < handlerList.length; i++) {
                 if (handlerList[i] === method) {
                     handlerList.splice(i, 1);
@@ -33,7 +33,7 @@ const EventListener = function (obj) {
         }
     };
     obj.destroy = function() {
-        Register = {};
+        register = {};
     };
     return obj;
 }

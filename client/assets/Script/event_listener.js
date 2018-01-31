@@ -1,40 +1,44 @@
+/**
+ * Created by chu on 2017/8/16 0016.
+ */
 const EventListener = function (obj) {
-    let register = {};
-    obj.on = function (name,method) {
-        if (!register.hasOwnProperty(name)) //如果这个注册事件不存在,久添加一个数组
-        {
-            register[name] = [];
+    let Register = {};
+    obj.on =  function (name, method) {
+        if (!Register.hasOwnProperty(name)){
+            Register[name] = [];
         }
-        register[name].push(method);
+        Register[name].push(method);
     };
     obj.fire = function (name) {
-        if (register.hasOwnProperty(name))
-        {
-            var handlerList = register[name];
-            for (let i = 0; i < handlerList.length; i++) {
-                const handler = handlerList[i];
+        console.log("fire " + name);
+        if (Register.hasOwnProperty(name)){
+            console.log("has own " + name);
+            var handlerList = Register[name];
+            for (let i = 0 ; i < handlerList.length ; i ++){
+                let handler = handlerList[i];
                 let args = [];
-                for (let j = 1; j< arguments.length; j++) {
+                for (let j = 1 ; j < arguments.length ; j ++){
                     args.push(arguments[j]);
                 }
                 handler.apply(this, args);
+                // console.log("args = " + JSON.stringify(args));
             }
         }
-    }; 
-    obj.off = function () {
+    };
+    obj.off = function (name, method) {
         console.log("off handler name = " + name);
-        if (Register.hasOwnProperty(name)) {
+        if (Register.hasOwnProperty(name)){
             var handlerList = Register[name];
-            for (var i = 0; i < handlerList.length; i++) {
-                if (handlerList[i] === method) {
-                    handlerList.splice(i, 1);
+            for (var i = 0 ; i < handlerList.length ; i ++){
+                if (handlerList[i] === method){
+                    handlerList.splice(i , 1);
                 }
             }
         }
     };
-    obj.destroy = function() {
+    obj.destroy = function () {
         Register = {};
     };
     return obj;
-}
-module.exports = EventListener
+};
+module.exports = EventListener;

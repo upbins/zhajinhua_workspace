@@ -12,7 +12,6 @@ const Room = function () {
             event:event_listner,
             index:player_list.length,
         })
-        //var player = Player(uid,socket,event_listner)
         player_list.push(player);
 
         var playerDatas = [];
@@ -23,9 +22,11 @@ const Room = function () {
                 index:pl.getIndex()
             });
         }
+        //同步消息
         player.sendSyncData({
             uid:uid,
             index:player.getIndex(),
+            house_manager_id:player_list[0].getUid(),
             players_data: playerDatas,
         });
     
@@ -40,12 +41,16 @@ const Room = function () {
     };
     event_listner.on("disconnect",function (uid) {
         for (let i = 0; i < player_list.length; i++) {
-            if (player_list[i].getUid === uid ){
+            if (player_list[i].getUid() === uid ){
                 player_list[i].destroy();
-                player_list[i].splice(i,1);
+                player_list.splice(i,1);
             }
         }
+        if (player_list.length === 0){ //如果房间没人了。直接返回
+            return;
+        }
         event_listner.fire("player_offline",uid);
+        event_listner.fire("change_house_manager_id",player_list[0].getUid());
     });
     return that;
 }

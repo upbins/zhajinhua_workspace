@@ -25,16 +25,19 @@ cc.Class({
 
         //进入游戏
         global.socket.on("sync_data", (data) => {
+            console.log("@@@@global.socket")
             console.log("sync data = " + JSON.stringify(data));
-            // global.player
             this.enterGameWorld(data);
         });
         global.socket.on("player_join", (data) =>{
             global.eventlistener.fire("player_join",data);
         });
         global.socket.on("player_offline", (uid) => {
-            console.log("@@@@@@@@@@@"+uid);
+            global.eventlistener.fire("player_offline",uid)
         });
+        global.socket.on("change_house_manager_id",(uid)=>{
+            global.eventlistener.fire("change_house_manager",uid)
+        })
         this.enterMainWorld();
     },
     enterMainWorld: function () {
@@ -51,7 +54,6 @@ cc.Class({
         console.log("enterGameWorld")
         this.runningWorld = cc.instantiate(this.game_world_prefab);
         this.runningWorld.parent = this.node;
-        //global.eventlistener.fire("sync_data", data);
         global.eventlistener.fire("sync_data", data);
     }
 });
