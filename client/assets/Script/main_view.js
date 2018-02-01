@@ -15,8 +15,9 @@ cc.Class({
     },
     buttoonClick: function (event, customData) {
         console.log("buttoonClick"+this.edit_box.string)
+        //抛出登陆事件
         if (this.edit_box.string.length !== 0) {
-            global.eventlistener.fire("login",this.edit_box.string);
+            global.eventControllerlistener.fire("login",this.edit_box.string);
         }
     },
 

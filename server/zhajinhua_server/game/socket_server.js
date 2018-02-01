@@ -1,10 +1,12 @@
 var Socket = require("socket.io");
 var Room = require("../game/room");
+//在www中条用监听服务器创建
 const SocketServer = function (server) {
     var that = Socket(server);
     var _roomList = [];
     that.on("connection", function (socket) {
         console.log("a user connection");
+        //接收到玩家登陆就创建一个房间
         socket.on("login_player", function (uid) { //接受客户端返回的信息
             console.log("玩家注册" + uid);
 

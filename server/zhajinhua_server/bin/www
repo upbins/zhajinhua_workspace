@@ -89,5 +89,6 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
+//监听服务器开启
 var socketServer = require("../game/socket_server.js");
 socketServer(server);

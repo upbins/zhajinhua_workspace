@@ -18,9 +18,16 @@ cc.Class({
     },
     onLoad: function () {
         this.node.addComponent(cc.Sprite).spriteFrame = this.sprite_frames[Math.random() * this.sprite_frames.length];
-
-        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        global.eventlistener.on("change_house_manager",this.changeHouseManager.bind(this));
+        //接受到改变房主的改变信息
+        const  changeHouseManager = (uid) =>{
+            console.log("player node change house manager = " + uid);
+            this.house_manager_label.string = "";
+            if (uid === this.uid){
+                this.house_manager_label.string = "房主";
+            }
+        };
+        global.gameEventListener.on("change_house_manager",changeHouseManager);
+        //global.eventlistener.on("change_house_manager",this.changeHouseManager.bind(this));
     },
 
     init: function (uid, index) {
@@ -31,21 +38,21 @@ cc.Class({
             this.house_manager_label.string = "房主"
         }
     },
-    changeHouseManager: function (uid) {
-        console.log("player node change house manager = " + uid);
-        this.house_manager_label.string = "";
-        if (uid === this.uid){
-            this.house_manager_label.string = "房主";
-
-        }
-    },
+    // changeHouseManager: function (uid) {
+    //     console.log("player node change house manager = " + uid);
+    //     this.house_manager_label.string = "";
+    //     if (uid === this.uid){
+    //         this.house_manager_label.string = "房主";
+    //
+    //     }
+    // },
 
     getUid:function () {
         return this.uid
     },
     onDestroy:function () {
         console.log("onDestroy")
-        global.eventlistener.off("change_house_manager",this.changeHouseManager)
+        global.gameEventListener.off("change_house_manager",this.changeHouseManager)
     },
 
 });

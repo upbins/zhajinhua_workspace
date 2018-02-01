@@ -12,20 +12,25 @@ cc.Class({
             default: [],
             type: cc.Node
         },
-        // game_ready_ui: {
-        //     default: null,
-        //     type: cc.Node
-        // }
+        game_ready_ui: {
+            default: null,
+            type: cc.Node
+        }
     },
     onLoad: function () {
         this._index = 0;
         this.playerNodeList = [];
-        //this.game_ready_ui.active = false;
-        global.eventlistener = EventListener({});
-        global.eventlistener.on("sync_data", (data) => {
+        this.game_ready_ui.active = false;
+        global.gameEventListener = EventListener({});
+        //接收到同步消息的事件
+        global.gameEventListener.on("sync_data", (data) => {
             console.log("game world sync data = " + JSON.stringify(data));
             global.playerData.uid = data.uid;
             global.playerData.house_manager_id = data.house_manager_id;
+            //收到同步消息的时候设置一个房主开始游戏按钮
+            if (data.uid === data.house_manager_id){
+                this.game_ready_ui.active = true;
+            }
             var _playersData = data.players_data;
             this._index = data.index;
 
@@ -34,10 +39,12 @@ cc.Class({
                 this.createPlayer(playerData.uid, playerData.index);
             }
         });
-        global.eventlistener.on("player_join",(data)=>{
+        //接收到玩家参加的事件
+        global.gameEventListener.on("player_join",(data)=>{
             this.createPlayer(data.uid,data.index);
         });
-        global.eventlistener.on("player_offline",(uid)=>{
+        //接收到玩家离线的事件
+        global.gameEventListener.on("player_offline",(uid)=>{
             for(var i =0; i < this.playerNodeList.length;i++){
                 var playerNode = this.playerNodeList[i];
                 if (playerNode.getComponent("player_node").getUid() == uid)
@@ -47,6 +54,13 @@ cc.Class({
                     this.playerNodeList.splice(i,1)
                 }
 
+            }
+        });
+        //收到变换房主的时候设置一个房主开始游戏按钮
+        global.gameEventListener.on("change_house_manager",(uid)=>{
+            global.playerData.house_manager_id = uid;
+            if (global.playerData.uid === uid){
+                this.game_ready_ui.active = true;
             }
         })
     },
@@ -63,4 +77,16 @@ cc.Class({
         player.position = this.player_pos_list[currentIndex].position;
         this.playerNodeList.push(player);
     },
+    onButtonClick:function (event,customData) {
+        console.log("customData"+customData)
+        switch (customData)
+        {
+            case "start_game":
+                console.log("start_game")
+                global.eventControllerlistener.fire("start_game")
+                break;
+            default:
+                break
+        }
+    }
 });
