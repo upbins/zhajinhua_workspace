@@ -1,10 +1,12 @@
 const Player = require("../game/player"); 
 const EventListner = require("../game/event_listener")
+const CardController = require("../game/card_controller")
 const Room = function () {
     var that = {};
     var player_list = [];
     var event_listner = EventListner({});
-
+    var card_controller = CardController();
+    card_controller.init()
     const getIndex = function () {
         var seatMap ={};
         //先存储已坐作为的一些状态
@@ -73,8 +75,19 @@ const Room = function () {
         event_listner.fire("change_house_manager_id",player_list[0].getUid());
     });
     event_listner.on("start_game",function () {
-        console.log("房主开始游戏")
+        console.log("房主开始游戏");
+        pushCard();
     })
+    const pushCard = function () {
+        for(var i =0;i < 3;i++){
+          for (var j =0; j<player_list.length;j++){
+            var player = player_list[j]
+            player.pushOneCard(card_controller.popCard())
+          }
+        }
+        //告诉玩家发送牌
+        event_listner.fire("push_card")
+    }
     return that;
 }
 module.exports = Room;

@@ -31,6 +31,10 @@ cc.Class({
             global.socket.emit("start_game");
         });
 
+        //接收到看牌信息
+        global.eventControllerlistener.on("look_card",()=>{
+          global.socket.emit("look_card")
+        })
         //接受到服务器返回玩家同步信息
         global.socket.on("sync_data", (data) => {
             console.log("sync data = " + JSON.stringify(data));
@@ -50,6 +54,15 @@ cc.Class({
             global.gameEventListener.fire("change_house_manager",uid)
         });
 
+        //接收到服务器返回发送卡片
+        global.socket.on("push_card",()=>{
+          global.gameEventListener.fire("push_card")
+        })
+
+        //接收显示牌
+        global.socket.on("show_card",(card_list)=>{
+          global.gameEventListener.fire("show_card",card_list);
+        })
         this.enterMainWorld();
     },
     enterMainWorld: function () {
