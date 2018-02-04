@@ -35,6 +35,12 @@ cc.Class({
         global.eventControllerlistener.on("look_card",()=>{
           global.socket.emit("look_card")
         })
+
+        global.eventControllerlistener.on("player_choose_rate",  (data)=> {
+          console.log("player_choose_rate");
+          global.socket.emit("player_choose_rate",data);
+        });
+
         //接受到服务器返回玩家同步信息
         global.socket.on("sync_data", (data) => {
             console.log("sync data = " + JSON.stringify(data));
@@ -62,6 +68,16 @@ cc.Class({
         //接收显示牌
         global.socket.on("show_card",(card_list)=>{
           global.gameEventListener.fire("show_card",card_list);
+        })
+
+        //接收到选择倍数消息
+        global.socket.on("player_choose_rate",(data)=>{
+          global.gameEventListener.fire("player_choose_rate",data);
+        })
+
+        //接收到轮流出手信息返回
+        global.socket.on("turn_player_message",(data)=>{
+          global.gameEventListener.fire("turn_player_message",data);
         })
         this.enterMainWorld();
     },

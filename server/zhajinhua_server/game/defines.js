@@ -1,7 +1,6 @@
 const  Defines = {};
 //定义扑克牌的值
 Defines.cardsValues = {
-  'a':14,
   '1':1,
   '2':2,
   '3':3,

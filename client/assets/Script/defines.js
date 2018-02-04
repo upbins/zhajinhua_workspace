@@ -6,7 +6,7 @@ Defines.cardShapeMap = {
   Diamond: 0  //方片
 };
 Defines.cardValueMap = {
-  'a': 1,
+  '1': 1,
   '2': 2,
   '3': 3,
   '4': 4,

@@ -22,6 +22,14 @@ const Player = function (data) {
     event_listner.fire("look_card",player_uid)
     player_socket.emit("show_card",card_list);//把牌发给玩家
   })
+
+  //接收到选择倍数请求
+  player_socket.on("player_choose_rate",function (rate) {
+    event_listner.fire("choose_rate",{
+      uid:player_uid,
+      rate:rate
+    })
+  })
   //向客户端发送同步人物信息
   that.sendSyncData = function (data) {
     console.log("send sync data  = " + JSON.stringify(data));
@@ -68,6 +76,16 @@ const Player = function (data) {
   }
   event_listner.on("look_card",playerLookCard)
 
+  //接收到选择倍数消息
+  const playerChooseRate = function (data) {
+    player_socket.emit("player_choose_rate",data)
+  }
+  event_listner.on("update_player_rate",playerChooseRate)
+
+  const turnPlayerMessage = function (data) {
+    player_socket.emit("turn_player_message",data)
+  }
+  event_listner.on("turn_player_index",turnPlayerMessage)
   that.getUid = function () {
     return player_uid
   };
@@ -84,8 +102,10 @@ const Player = function (data) {
     event_listner.off("send_create_player_message",sendCreatePlayerMessage);
     event_listner.off("player_offline",sendPlayerOffline);
     event_listner.off("change_house_manager_id",sendChangeHouseMangaer);
-    event_listner.off("change_house_manager_id",pushCard);
-    event_listner.off("look_card",playerLookCard)
+    event_listner.off("push_card",pushCard);
+    event_listner.off("look_card",playerLookCard);
+    event_listner.off("choose_rate",playerChooseRate);
+    event_listner.off("turn_player_index",turnPlayerMessage);
   };
 
   return that;

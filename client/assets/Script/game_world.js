@@ -87,10 +87,19 @@ cc.Class({
     {
       case "start_game":
         console.log("start_game")
-        global.eventControllerlistener.fire("start_game")
+        global.eventControllerlistener.fire("start_game");
         break;
       case "look_card":
-        global.eventControllerlistener.fire("look_card")
+        global.eventControllerlistener.fire("look_card");
+        break;
+      case "rate_one":
+        global.eventControllerlistener.fire("player_choose_rate",1);
+        break;
+      case "rate_two":
+        global.eventControllerlistener.fire("player_choose_rate",2);
+        break;
+      case "rate_five":
+        global.eventControllerlistener.fire("player_choose_rate",5);
         break;
       default:
         break
