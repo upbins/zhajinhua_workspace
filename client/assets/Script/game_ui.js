@@ -23,6 +23,10 @@ cc.Class({
       default:null,
       type:cc.Button
     },
+    compare_btn:{
+      default:null,
+      type:cc.Button
+    },
     totalRateLabel:{
       default:null,
       type:cc.Label
@@ -71,7 +75,7 @@ cc.Class({
         }
       }
     }
-
+    this.compare_btn.interactable = value;
   },
   pushCard:function () {
     this.node.active = true;

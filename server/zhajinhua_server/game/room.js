@@ -84,6 +84,20 @@ const Room = function () {
     event_listner.fire("player_offline",uid);
     event_listner.fire("change_house_manager_id",player_list[0].getUid());
   });
+
+  const playerComparePk = function (data) {
+    var map ={};
+    for(var i = 0;i<player_list.length;i++){
+      map[player_list[i].getUid()] = player_list[i];
+    }
+    var player_1 = map[data.player_uid];
+    var player_2 = map[data.target_uid];
+    var player_1_card_list = player_1.getCardList();
+    var player_2_card_list = player_2.getCardList();
+    var result = card_controller.compareCard(player_1_card_list,player_2_card_list);//比牌结果
+  }
+  //接收到玩家比牌事件的监听
+  event_listner.on("player_compare_pk",playerComparePk)
   event_listner.on("start_game",function () {
     console.log("房主开始游戏");
     pushCard();

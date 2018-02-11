@@ -30,6 +30,15 @@ const Player = function (data) {
       rate:rate
     })
   })
+
+  //接收到比牌的客户端请求
+  player_socket.on("player_compare_choose",function (uid) {
+      console.log("player_compare_choose"+ uid);
+      event_listner.fire("player_compare_pk",{
+        player_uid:player_uid,
+        target_uid:uid
+      });
+  })
   //向客户端发送同步人物信息
   that.sendSyncData = function (data) {
     console.log("send sync data  = " + JSON.stringify(data));
@@ -91,6 +100,9 @@ const Player = function (data) {
   };
   that.getIndex = function () {
     return index
+  };
+  that.getCardList = function () {
+      return card_list
   };
   that.pushOneCard = function (card) {
     card_list.push(card);

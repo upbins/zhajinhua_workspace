@@ -101,6 +101,9 @@ cc.Class({
       case "rate_five":
         global.eventControllerlistener.fire("player_choose_rate",5);
         break;
+      case "compare":
+        global.gameEventListener.fire("player_pk");
+        break
       default:
         break
     }
