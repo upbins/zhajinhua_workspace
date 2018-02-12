@@ -38,7 +38,26 @@ cc.Class({
     global.gameEventListener.on("show_card",this.showCard.bind(this));
     global.gameEventListener.on("player_choose_rate",this.showTotalRate.bind(this));
     global.gameEventListener.on("turn_player_message",this.turnPlayerMessage.bind(this));
+    global.gameEventListener.on("result_only_card",this.resultShowWinCard.bind(this));
+    //global.gameEventListener.on("result_show_lose_card",this.resultShowLoseCard.bind(this));
   },
+  resultShowWinCard:function (data) {
+    console.log("result_show_win_card" + JSON.stringify(data)+ global.playerData.uid + data.win_uid)
+    for (var i = 0; i < data.length ; i++){
+      var cardData = data[i]
+      var cardNode = this.cardNodeList[i]
+      cardNode.getComponent("card_node").showCard(cardData)
+    }
+
+  },
+  // resultShowLoseCard:function (data) {
+  //   console.log("result_show_lose_card" + JSON.stringify(data) + data.lose_uid + global.playerData.uid)
+  //   // for (var i = 0; i < data.length ; i++){
+  //   //   var cardData = data[i]
+  //   //   var cardNode = this.cardNodeList[i]
+  //   //   cardNode.getComponent("card_node").showCard(cardData)
+  //   // }
+  // },
   turnPlayerMessage:function (data) {
     var uid = data.uid
     this.currentMaxRate = data.maxRate;
@@ -104,6 +123,7 @@ cc.Class({
   },
   onDestroy:function () {
     global.gameEventListener.off("push_card",this.pushCard)
-    global.gameEventListener.off("show_card")
+    global.gameEventListener.off("show_card",this.showCard)
+    global.gameEventListener.off("result_only_card",this.resultShowWinCard);
   }
 });

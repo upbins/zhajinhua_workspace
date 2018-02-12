@@ -121,25 +121,44 @@ const CardController = function () {
       "Color":3,
       "ColorStraight":4,
       "Boss":5,
-    }
-    const sordCard = function (card) {
-        card.sort(function (a,b) {
-          return Defines.cardsValues[a.value] < Defines.cardsValues[b.value];
-        })
-    }
+    };
+    const sortCard = function (cards) {
+
+      if (checkDouble(cards)){
+        var map = {};
+        for (var i = 0; i < cards.length ; i ++){
+          var card = cards[i];
+          if (map.hasOwnProperty(card.value)){
+            map[card.value].push(card);
+          }else {
+            map[card.value] = [card];
+          }
+        }
+        var value = 0;
+        for (var i in map){
+          if (map[i].length === 1){
+            value = i;
+          }
+        }
+        cards.sort(function (a, b) {
+          return a.value === value;
+        });
+        return cards;
+      }
+      cards.sort(function (a ,b) {
+        return Defines.cardsValues[a.value] < Defines.cardsValues[b.value];
+      });
+      return cards;
+    };
     that.compareCard = function (card1,card2) {
       console.log("card1" + JSON.stringify(card1))
       console.log("card2" + JSON.stringify(card2))
-      // var result = checkColorStraight([{value: "5", shape:Defines.cardShapes.Heart},
-      //   {value: "2", shape:Defines.cardShapes.Heart},
-      //   {value: "3", shape:Defines.cardShapes.Heart}])
-      // console.log("result++++++",result)
-      card1 = [{value: "5", shape:Defines.cardShapes.Heart},
-        {value: "2", shape:Defines.cardShapes.Heart},
-        {value: "3", shape:Defines.cardShapes.Heart}]
-      card2 = [{value: "a", shape:Defines.cardShapes.Heart},
-        {value: "2", shape:Defines.cardShapes.Club},
-        {value: "4", shape:Defines.cardShapes.Heart}]
+      // card1 = [{value: "2", shape:Defines.cardShapes.Club},
+      //   {value: "2", shape:Defines.cardShapes.Club},
+      //   {value: "3", shape:Defines.cardShapes.Diamond}]
+      // card2 = [{value: "4", shape:Defines.cardShapes.Diamond},
+      //   {value: "2", shape:Defines.cardShapes.Club},
+      //   {value: "4", shape:Defines.cardShapes.Heart}]
       var card_list = [card1, card2]
       var score_map = {
         "0" : 0,
@@ -155,17 +174,31 @@ const CardController = function () {
           }
         }
       }
+      console.log("score_map",JSON.stringify(score_map))
       if (score_map[0] === score_map[1]) //积分相等
       {
-        card1 = sordCard(card1)
-        card2 = sordCard(card2)
+        card1 = sortCard(card1)
+        card2 = sortCard(card2)
         console.log("card1++++++",JSON.stringify(card1))
         console.log("card2++++++",JSON.stringify(card2))
-      }else if(score_map[0] > score_map[1]){
+        for(var i = 0;i<3;i++){
+          if (Defines.cardsValues[card1[i].value]> Defines.cardsValues[card2[i].value]){
+              return true
+          }
+          else if (Defines.cardsValues[card1[i].value] < Defines.cardsValues[card2[i].value]){
+            return false
+          }
+          if (card1[0].shape > card2[2].shape){
+            return false
+          }
+        }
+      }
+      else if(score_map[0] > score_map[1])
+      {
           return true
       }
       return false
-      console.log("score_map",JSON.stringify(score_map))
+
     }
     return that;
 };

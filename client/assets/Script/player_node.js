@@ -30,6 +30,10 @@ cc.Class({
     player_compare_btn:{
       default:null,
       type:cc.Button
+    },
+    pk_result_label:{
+      default:null,
+      type:cc.Label
     }
   },
   onLoad: function () {
@@ -49,6 +53,7 @@ cc.Class({
     this.player_compare_btn.node.active = false;
     global.gameEventListener.on("player_pk",this.playerPk.bind(this));
     global.gameEventListener.on("palyer_compare_choosed",this.playerChoosed.bind(this))
+    global.gameEventListener.on("pk_reuslt",this.pkResult.bind(this))
   },
   playerChoosed:function () {
     this.player_compare_btn.node.active = false
@@ -59,16 +64,47 @@ cc.Class({
         this.player_compare_btn.node.active = true
       }
   },
+  pkResult:function (data) {
+    //console.log("player_node ++++pkResult" + JSON.stringify(data))
+    var data_list = undefined
+    if(data.win_uid === this.uid){
+      this.pk_result_label.string = "pk win";
+      data_list = data.win_card_list
+    }else if(data.lose_uid === this.uid){
+      this.pk_result_label.string = "pk lose";
+      data_list = data.lose_card_list
+
+    }
+    if (this.uid != global.playerData.uid ){
+      var temp_list = undefined
+      if (data.win_uid != global.playerData.uid){
+        temp_list =  data.win_card_list
+      }else{
+        temp_list =  data.lose_card_list
+      }
+      for (var i = 0; i < temp_list.length; i++){
+        var cardData = temp_list[i]
+        console.log(cardData)
+        var cardNode = this.cardNodeList[i]
+        cardNode.getComponent("card_node").showCard(cardData)
+      }
+    }else {
+      global.gameEventListener.fire("result_only_card",data_list)
+    }
+
+  },
   pushCard:function () {
     //如果是自己的话就不再发牌了
     if (this.getUid() === global.playerData.uid){
       return ;
     }
+    this.cardNodeList = []
     for (var i =0;i <3;i++){
       var card_node = cc.instantiate(this.card_node_prefab);
       card_node.setScale(0.6,0.6)
       this.node.addChild(card_node);
       card_node.setPosition(cc.pAdd(this.card_pos[this.index].position,cc.p((3 - 1) * - 0.5 + 40 * i,0)));
+      this.cardNodeList.push(card_node)
     }
   },
   init: function (uid, index) {
@@ -118,6 +154,7 @@ cc.Class({
     global.gameEventListener.off("push_card",this.playerChooseRate);
     global.gameEventListener.off("player_pk",this.playerPk);
     global.gameEventListener.off("palyer_compare_choosed",this.playerChoosed);
+    global.gameEventListener.off("pk_reuslt",this.pkResult)
   },
 
 });

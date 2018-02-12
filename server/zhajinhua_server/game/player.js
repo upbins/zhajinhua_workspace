@@ -108,6 +108,10 @@ const Player = function (data) {
     card_list.push(card);
     console.log(player_uid +"get"+ JSON.stringify(card))
   }
+  const sendPkResult = function (data) {
+    player_socket.emit("pk_result",data)
+  }
+  event_listner.on("pk_result",sendPkResult)
 
   //主要释放一些事件
   that.destroy = function () {
@@ -118,6 +122,7 @@ const Player = function (data) {
     event_listner.off("look_card",playerLookCard);
     event_listner.off("choose_rate",playerChooseRate);
     event_listner.off("turn_player_index",turnPlayerMessage);
+    event_listner.off("pk_result",sendPkResult)
   };
 
   return that;

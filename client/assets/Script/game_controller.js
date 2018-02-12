@@ -84,6 +84,11 @@ cc.Class({
     global.socket.on("turn_player_message",(data)=>{
       global.gameEventListener.fire("turn_player_message",data);
     })
+    //接收到比牌结果
+    global.socket.on("pk_result",(data)=>{
+      console.log("pk_result"+JSON.stringify(data));
+      global.gameEventListener.fire("pk_reuslt",data);
+    })
     this.enterMainWorld();
   },
   enterMainWorld: function () {

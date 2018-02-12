@@ -95,6 +95,13 @@ const Room = function () {
     var player_1_card_list = player_1.getCardList();
     var player_2_card_list = player_2.getCardList();
     var result = card_controller.compareCard(player_1_card_list,player_2_card_list);//比牌结果
+    console.log("result+++++",result)
+    event_listner.fire("pk_result",{
+      win_uid:result?data.player_uid:data.target_uid,
+      win_card_list:result?player_1_card_list:player_2_card_list,
+      lose_uid:result?data.target_uid:data.player_uid,
+      lose_card_list:result?player_2_card_list:player_1_card_list,
+    })
   }
   //接收到玩家比牌事件的监听
   event_listner.on("player_compare_pk",playerComparePk)
